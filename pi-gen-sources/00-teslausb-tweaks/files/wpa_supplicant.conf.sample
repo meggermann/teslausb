@@ -3,7 +3,15 @@ update_config=1
 country=US
 
 network={
-  ssid="TEMPSSID"
-  psk="TEMPPASS"
+  ssid="3dv1g"
+  psk="speedythedog299"
   key_mgmt=WPA-PSK
+  priority=9
+}
+
+network={
+  ssid="3dv"
+  psk="speedythedog299"
+  key_mgmt=WPA-PSK
+  priority=3
 }

@@ -293,7 +293,6 @@ function archive_teslacam_clips () {
     if [ "$DIR_COUNT" -gt 0 ]
     then
         log "Starting recording archiving: $DIR_COUNT event folder(s) with $FILE_COUNT file(s)"
-
         # /root/bin/send-push-message "TeslaUSB:" "Archiving $DIR_COUNT event folder(s) with $FILE_COUNT file(s) starting at $(date)"
 
         # Ensure Sentry Mode is enabled before archiving
@@ -342,7 +341,10 @@ function copy_music_files () {
 
 function archive_clips () {
   log "Archiving..."
+
+  log "Checking ssid.."
   iwgetid 2>&1 > "$LOG_FILE"
+
 
   if ! /root/bin/connect-archive.sh
   then
@@ -423,6 +425,9 @@ function doubleblink () {
 }
 
 function set_time () {
+  LOG "Setting date from Google.."
+  date -s "$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"
+
   log "Waiting for time to be set by ntpd..."
   # shellcheck disable=SC2034
   for i in {1..10}
@@ -489,10 +494,6 @@ export -f log
 
 echo "==============================================" >> "$LOG_FILE"
 log "Starting archiveloop..."
-date -s "$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"
-log "Checking ssid.."
-iwgetid 2>&1 > "$LOG_FILE"
-
 
 mount_all_snapshots
 
